@@ -1,6 +1,7 @@
 const tableau = document.querySelector('section');
 const difficulte = document.querySelector('select');
 const endMessage = document.querySelector('h2');
+const rejouer = document.querySelector('button');
 
 let nombreCase = 9;
 
@@ -189,18 +190,25 @@ function game(){
     });
 }
 
+function restart(){
+    finPartie = false;
+    win = false;
+    loose = false;
+    endMessage.innerText = '';
+    game();
+}
+
 function startGame(){
     game();
 
-    difficulte.addEventListener('change' , (event) =>{
-        nombreCase = parseInt(event.target.value);
-        finPartie = false;
-        win = false;
-        loose = false;
-        endMessage.innerText = '';
-
-        game();
+    difficulte.addEventListener('change' , (e) =>{
+        nombreCase = parseInt(e.target.value);
+        restart();
     });
+
+    rejouer.addEventListener('click' , () => {
+        restart();
+    })
 }
 
 startGame();

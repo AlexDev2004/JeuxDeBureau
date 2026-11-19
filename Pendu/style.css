@@ -1,0 +1,47 @@
+ul{
+    display: flex;
+    padding: 0;
+}
+li{
+    list-style: none;
+    margin-right: 5px;
+    font-size: 50px;
+}
+canvas{
+    width: 400px;
+    height: 400px;
+    background-color: rgb(192, 192, 192);
+    border-radius: 5px;
+}
+
+section{
+    display: flex;
+    max-width: 500px;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    div{
+        font-size: 20px;
+        padding: 10px;
+        background-color: rgb(214, 214, 214);
+        border-radius: 5px;
+        font-weight: bold;
+    }
+    .valide{
+        background-color: rgb(95, 194, 95);
+    }
+    .valide:hover{
+        background-color: rgb(95, 194, 95);
+    }
+    .fail{
+        background-color: rgb(226, 93, 93);
+    }
+    .fail:hover{
+        background-color: rgb(226, 93, 93);
+    }
+    div:hover{
+        background-color: rgb(156, 156, 156);
+    }
+}
