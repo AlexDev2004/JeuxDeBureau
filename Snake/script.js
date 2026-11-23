@@ -204,7 +204,7 @@ function restart(niveau){
 
     switch(niveau){
         case 'facile':
-            game(150);
+            game(170);
             break;
         case 'moyen':
             game(100);
@@ -220,7 +220,7 @@ function restart(niveau){
 function startGame(){
     score = 0;
 
-    game(150);
+    game(170);
 
     difficulte.addEventListener('change' , (e) => {
         const niveau = e.target.value;  
