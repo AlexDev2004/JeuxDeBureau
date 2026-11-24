@@ -1,14 +1,4 @@
 function drawTiles(tile){
-    // Tuile
-    ctx.fillStyle = 'BlanchedAlmond';
-    ctx.strokeStyle = 'DarkSalmon';
-    ctx.lineWidth = 2;
-
-    ctx.beginPath();
-    ctx.roundRect(tileX , tileY , tileWidth , tileHeight , 5);
-    ctx.fill();
-    ctx.stroke();
-
     switch(tile){
         // -------- CERCLES ----------------------------
         case 'circleOne':
@@ -306,3 +296,112 @@ function bonus(symbol , number , color){
     text(symbol , 0.5 , 0.4 , 0.7 , color);
     text(number , 0.5 , 0.82 , 0.3 , 'DimGray');
 }
+
+
+// Tuiles de référence du Mahjong : 144 tuiles au total.
+// type  = ce qu'on dessine (le nom utilisé dans drawTiles)
+// pair  = ce qui sert à comparer : deux tuiles forment une paire si leur pair est identique
+// count = nombre d'exemplaires de cette tuile dans le jeu
+
+const tileSet = [
+    // --------- CERCLES ---------
+    { type: 'circleOne', pair: 'circleOne', count: 4 },
+    { type: 'circleTwo', pair: 'circleTwo', count: 4 },
+    { type: 'circleThree', pair: 'circleThree', count: 4 },
+    { type: 'circleFour', pair: 'circleFour', count: 4 },
+    { type: 'circleFive', pair: 'circleFive', count: 4 },
+    { type: 'circleSix', pair: 'circleSix', count: 4 },
+    { type: 'circleSeven', pair: 'circleSeven', count: 4 },
+    { type: 'circleEight', pair: 'circleEight', count: 4 },
+    { type: 'circleNine', pair: 'circleNine', count: 4 },
+    // --------- BAMBOUS ---------
+    { type: 'bambooOne', pair: 'bambooOne', count: 4 },
+    { type: 'bambooTwo', pair: 'bambooTwo', count: 4 },
+    { type: 'bambooThree', pair: 'bambooThree', count: 4 },
+    { type: 'bambooFour', pair: 'bambooFour', count: 4 },
+    { type: 'bambooFive', pair: 'bambooFive', count: 4 },
+    { type: 'bambooSix', pair: 'bambooSix', count: 4 },
+    { type: 'bambooSeven', pair: 'bambooSeven', count: 4 },
+    { type: 'bambooEight', pair: 'bambooEight', count: 4 },
+    { type: 'bambooNine', pair: 'bambooNine', count: 4 },
+    // --------- CARACTERES ---------
+    { type: 'characterOne', pair: 'characterOne', count: 4 },
+    { type: 'characterTwo', pair: 'characterTwo', count: 4 },
+    { type: 'characterThree', pair: 'characterThree', count: 4 },
+    { type: 'characterFour', pair: 'characterFour', count: 4 },
+    { type: 'characterFive', pair: 'characterFive', count: 4 },
+    { type: 'characterSix', pair: 'characterSix', count: 4 },
+    { type: 'characterSeven', pair: 'characterSeven', count: 4 },
+    { type: 'characterEight', pair: 'characterEight', count: 4 },
+    { type: 'characterNine', pair: 'characterNine', count: 4 },
+    // --------- VENTS ---------
+    { type: 'windEast', pair: 'windEast', count: 4 },
+    { type: 'windSouth', pair: 'windSouth', count: 4 },
+    { type: 'windWest', pair: 'windWest', count: 4 },
+    { type: 'windNorth', pair: 'windNorth', count: 4 },
+    // --------- DRAGONS ---------
+    { type: 'dragonRed', pair: 'dragonRed', count: 4 },
+    { type: 'dragonGreen', pair: 'dragonGreen', count: 4 },
+    { type: 'dragonWhite', pair: 'dragonWhite', count: 4 },
+    // --------- FLEURS : n'importe quelle fleur va avec n'importe quelle autre ---------
+    { type: 'flowerPlum', pair: 'flower', count: 1 },
+    { type: 'flowerOrchid', pair: 'flower', count: 1 },
+    { type: 'flowerChrysanthemum', pair: 'flower', count: 1 },
+    { type: 'flowerBamboo', pair: 'flower', count: 1 },
+    // --------- SAISONS : n'importe quelle saison va avec n'importe quelle autre ---------
+    { type: 'seasonSpring', pair: 'season', count: 1 },
+    { type: 'seasonSummer', pair: 'season', count: 1 },
+    { type: 'seasonAutumn', pair: 'season', count: 1 },
+    { type: 'seasonWinter', pair: 'season', count: 1 }
+];
+
+// ---------- Contrôle au chargement (à retirer quand tout fonctionne) ----------
+// const total = tileSet.reduce((somme , t) => somme + t.count , 0);
+// console.log('Total de tuiles :' , total);     // doit afficher 144
+
+// const parParPair = {};
+// tileSet.forEach(t => {
+//     parParPair[t.pair] = (parParPair[t.pair] || 0) + t.count;
+// });
+// for(const code in parParPair){
+//     if(parParPair[code] % 2 !== 0) console.error('Nombre impair pour' , code);
+// }
+
+// Disposition « tortue » : 144 emplacements (positions seulement, pas de type).
+// x et y sont en demi-tuiles : une tuile occupe 2 x 2 unités.
+// z est l'étage (0 = sol).
+// Taille du canvas conseillée : 800 x 600.
+
+const layoutModel = [
+    // --------- ETAGE 0 (87) ---------
+    {x: 2, y: 0, z: 0}, {x: 4, y: 0, z: 0}, {x: 6, y: 0, z: 0}, {x: 8, y: 0, z: 0}, {x: 10, y: 0, z: 0}, {x: 12, y: 0, z: 0},
+    {x: 14, y: 0, z: 0}, {x: 16, y: 0, z: 0}, {x: 18, y: 0, z: 0}, {x: 20, y: 0, z: 0}, {x: 22, y: 0, z: 0}, {x: 24, y: 0, z: 0},
+    {x: 6, y: 2, z: 0}, {x: 8, y: 2, z: 0}, {x: 10, y: 2, z: 0}, {x: 12, y: 2, z: 0}, {x: 14, y: 2, z: 0}, {x: 16, y: 2, z: 0},
+    {x: 18, y: 2, z: 0}, {x: 20, y: 2, z: 0}, {x: 4, y: 4, z: 0}, {x: 6, y: 4, z: 0}, {x: 8, y: 4, z: 0}, {x: 10, y: 4, z: 0},
+    {x: 12, y: 4, z: 0}, {x: 14, y: 4, z: 0}, {x: 16, y: 4, z: 0}, {x: 18, y: 4, z: 0}, {x: 20, y: 4, z: 0}, {x: 22, y: 4, z: 0},
+    {x: 2, y: 6, z: 0}, {x: 4, y: 6, z: 0}, {x: 6, y: 6, z: 0}, {x: 8, y: 6, z: 0}, {x: 10, y: 6, z: 0}, {x: 12, y: 6, z: 0},
+    {x: 14, y: 6, z: 0}, {x: 16, y: 6, z: 0}, {x: 18, y: 6, z: 0}, {x: 20, y: 6, z: 0}, {x: 22, y: 6, z: 0}, {x: 24, y: 6, z: 0},
+    {x: 2, y: 8, z: 0}, {x: 4, y: 8, z: 0}, {x: 6, y: 8, z: 0}, {x: 8, y: 8, z: 0}, {x: 10, y: 8, z: 0}, {x: 12, y: 8, z: 0},
+    {x: 14, y: 8, z: 0}, {x: 16, y: 8, z: 0}, {x: 18, y: 8, z: 0}, {x: 20, y: 8, z: 0}, {x: 22, y: 8, z: 0}, {x: 24, y: 8, z: 0},
+    {x: 4, y: 10, z: 0}, {x: 6, y: 10, z: 0}, {x: 8, y: 10, z: 0}, {x: 10, y: 10, z: 0}, {x: 12, y: 10, z: 0}, {x: 14, y: 10, z: 0},
+    {x: 16, y: 10, z: 0}, {x: 18, y: 10, z: 0}, {x: 20, y: 10, z: 0}, {x: 22, y: 10, z: 0}, {x: 6, y: 12, z: 0}, {x: 8, y: 12, z: 0},
+    {x: 10, y: 12, z: 0}, {x: 12, y: 12, z: 0}, {x: 14, y: 12, z: 0}, {x: 16, y: 12, z: 0}, {x: 18, y: 12, z: 0}, {x: 20, y: 12, z: 0},
+    {x: 2, y: 14, z: 0}, {x: 4, y: 14, z: 0}, {x: 6, y: 14, z: 0}, {x: 8, y: 14, z: 0}, {x: 10, y: 14, z: 0}, {x: 12, y: 14, z: 0},
+    {x: 14, y: 14, z: 0}, {x: 16, y: 14, z: 0}, {x: 18, y: 14, z: 0}, {x: 20, y: 14, z: 0}, {x: 22, y: 14, z: 0}, {x: 24, y: 14, z: 0},
+    {x: 0, y: 7, z: 0}, {x: 26, y: 7, z: 0}, {x: 28, y: 7, z: 0},
+    // --------- ETAGE 1 (36) ---------
+    {x: 8, y: 2, z: 1}, {x: 10, y: 2, z: 1}, {x: 12, y: 2, z: 1}, {x: 14, y: 2, z: 1}, {x: 16, y: 2, z: 1}, {x: 18, y: 2, z: 1},
+    {x: 8, y: 4, z: 1}, {x: 10, y: 4, z: 1}, {x: 12, y: 4, z: 1}, {x: 14, y: 4, z: 1}, {x: 16, y: 4, z: 1}, {x: 18, y: 4, z: 1},
+    {x: 8, y: 6, z: 1}, {x: 10, y: 6, z: 1}, {x: 12, y: 6, z: 1}, {x: 14, y: 6, z: 1}, {x: 16, y: 6, z: 1}, {x: 18, y: 6, z: 1},
+    {x: 8, y: 8, z: 1}, {x: 10, y: 8, z: 1}, {x: 12, y: 8, z: 1}, {x: 14, y: 8, z: 1}, {x: 16, y: 8, z: 1}, {x: 18, y: 8, z: 1},
+    {x: 8, y: 10, z: 1}, {x: 10, y: 10, z: 1}, {x: 12, y: 10, z: 1}, {x: 14, y: 10, z: 1}, {x: 16, y: 10, z: 1}, {x: 18, y: 10, z: 1},
+    {x: 8, y: 12, z: 1}, {x: 10, y: 12, z: 1}, {x: 12, y: 12, z: 1}, {x: 14, y: 12, z: 1}, {x: 16, y: 12, z: 1}, {x: 18, y: 12, z: 1},
+    // --------- ETAGE 2 (16) ---------
+    {x: 10, y: 4, z: 2}, {x: 12, y: 4, z: 2}, {x: 14, y: 4, z: 2}, {x: 16, y: 4, z: 2}, {x: 10, y: 6, z: 2}, {x: 12, y: 6, z: 2},
+    {x: 14, y: 6, z: 2}, {x: 16, y: 6, z: 2}, {x: 10, y: 8, z: 2}, {x: 12, y: 8, z: 2}, {x: 14, y: 8, z: 2}, {x: 16, y: 8, z: 2},
+    {x: 10, y: 10, z: 2}, {x: 12, y: 10, z: 2}, {x: 14, y: 10, z: 2}, {x: 16, y: 10, z: 2},
+    // --------- ETAGE 3 (4) ---------
+    {x: 12, y: 6, z: 3}, {x: 14, y: 6, z: 3}, {x: 12, y: 8, z: 3}, {x: 14, y: 8, z: 3},
+    // --------- ETAGE 4 (1) ---------
+    {x: 13, y: 7, z: 4}
+];
