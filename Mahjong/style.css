@@ -4,3 +4,6 @@ canvas{
     margin-top: 20px;
     border: rgb(0, 0, 0) solid 3px;
 }
+p{
+    margin: 0;
+}

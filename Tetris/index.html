@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Tetris</h1>
+    <nav>
+        <form>
+            <label for="difficulte">Difficulté</label>
+            <select id="difficulte">
+                <option value="0.2">Facile</option>
+                <option value="0.35">Moyen</option>
+                <option value="0.5">Difficile</option>
+            </select>
+        </form>
+        <button>Rejouer</button>
+        <p></p>
+    </nav>
+    <section>
+        <canvas id="stat" width="180" height="630"></canvas>
+        <canvas id="canva" width="300" height="630"></canvas>
+        <canvas id="preview" width="180" height="180"></canvas>
+    </section>
+    <h2></h2>
+    <script src="exemple.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

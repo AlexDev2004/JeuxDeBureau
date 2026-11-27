@@ -1,6 +1,9 @@
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 const endMesage = document.querySelector('h2');
+const difficulte = document.querySelector('select');
+const rejouer = document.querySelector('button');
+const nomTuile = document.querySelector('p');
 
 const tileWidth = 50;
 const tileHeight = 70;
@@ -15,6 +18,7 @@ function buildTiles(){
         for(let i = 0; i < tile.count; i++){
             tiles.push({pair: tile.pair, type: tile.type});
         }
+        
     });
 }
 
@@ -25,7 +29,7 @@ function makeLayout(){
     buildTiles();
     layout = layoutModel.map(element => ({...element , retiree: false}));
 
-    while(tiles.length > 0){
+    while(layout.some(slot => !slot.retiree)){
         let slotFree = layout.filter(slot => !slot.retiree && check(slot));
         if(slotFree.length < 2){
             countTryLayout++;
@@ -150,8 +154,8 @@ function check(tile){
 // Position (en pixels) du coin haut-gauche d'une tuile
 function tilePosition(tile){
     return {
-        x: tile.x * (tileWidth / 2) - (tile.z * 4) + 10,
-        y: tile.y * (tileHeight / 2) - (tile.z * 4) + 10
+        x: tile.x * (tileWidth / 2) - (tile.z * 4) + 40,
+        y: tile.y * (tileHeight / 2) - (tile.z * 4) + 40
     };
 }
 
@@ -173,8 +177,30 @@ function findTileAt(mouseX , mouseY){
     let zMax = 0;
     let tileHovered = null;
     let tileClicked = null;
+    let layoutModel = [];
+    let difficulteActu;
 
-function startGame(){
+function startGame(niveau){
+    layoutModel = [];
+    switch(niveau){
+        case 1:
+            layoutModel = layoutEasy.map(element => ({...element}));
+            canvas.width = 390;
+            canvas.height = 360;
+            difficulteActu = 1;
+            break;
+        case 2:
+            layoutModel = layoutMedium.map(element => ({...element}));
+            canvas.width = 490;
+            canvas.height = 500;
+            difficulteActu = 2;
+            break;
+        case 3:
+            layoutModel = layoutDifficult.map(element => ({...element}));
+            canvas.width = 830;
+            canvas.height = 640;
+            difficulteActu = 3;
+    }
     endMesage.innerText = '';
     tileHovered = null;
     tileClicked = null;
@@ -188,7 +214,7 @@ function startGame(){
 
     drawLayout();
 }
-startGame();
+startGame(1);
 
 
 // Event
@@ -208,15 +234,17 @@ canvas.addEventListener('mouseleave' , () => {
 
 canvas.addEventListener('click' , (e) => {
     let tile = findTileAt(e.offsetX , e.offsetY);
-    if(!check(tile)) tile = null;  
+    if(tile !== null && !check(tile)) tile = null;  
     if(tile == null){
         tileClicked = null;
         drawLayout();
+        nomTuile.innerText = '';
         return;
     }
     if(tile === tileClicked) {
         tileClicked = null;
         drawLayout();
+        nomTuile.innerText = '';
         return;
     }     
     if(tileClicked != null && tileClicked.pair === tile.pair){
@@ -225,6 +253,7 @@ canvas.addEventListener('click' , (e) => {
         tileClicked = null;
         tileHovered = null;
         drawLayout();
+        nomTuile.innerText = '';
 
         if(layout.every(t => t.retiree)){
             endMesage.innerText = 'Gagné !';
@@ -233,7 +262,8 @@ canvas.addEventListener('click' , (e) => {
         }        return;
     }            
     tileClicked = tile;
-    drawLayout();                                   
+    drawLayout();
+    nomTuile.innerText = tile.type;
 });
 
 function hasMove(){
@@ -245,3 +275,12 @@ function hasMove(){
     }
     return false;
 }
+
+rejouer.addEventListener('click', () => {
+    startGame(difficulteActu);
+});
+
+difficulte.addEventListener('change' , (e) => {
+    const niveau = Number(e.target.value);
+    startGame(niveau);
+});

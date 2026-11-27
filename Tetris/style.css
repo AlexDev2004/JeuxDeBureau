@@ -1,0 +1,16 @@
+canvas{
+    background-color: rgb(58, 58, 58);
+    border-radius: 5px;
+    margin-top: 20px;
+    border: rgb(0, 0, 0) solid 3px;
+}
+
+#preview{
+    width: 180px;
+    height: 180px;
+}
+
+section{
+    display: flex;
+    gap: 20px;
+}
